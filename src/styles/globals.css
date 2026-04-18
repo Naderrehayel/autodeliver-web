@@ -1,0 +1,197 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Fonts ─────────────────────────────────────── */
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --font-display: 'DM Serif Display', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, sans-serif;
+  --font-mono:    'DM Mono', 'Courier New', monospace;
+
+  /* Brand */
+  --brand:        #1D9E75;
+  --brand-light:  #E1F5EE;
+  --brand-dark:   #0F6E56;
+
+  /* Ink scale */
+  --ink-900: #161614;
+  --ink-800: #2C2C28;
+  --ink-600: #5A5954;
+  --ink-400: #8A8880;
+  --ink-200: #C8C7C0;
+  --ink-100: #E8E7E2;
+  --ink-50:  #F5F4F0;
+
+  /* Surface */
+  --surface:       #FFFFFF;
+  --surface-2:     #F9F8F5;
+  --surface-3:     #F2F1ED;
+}
+
+/* ── Base ───────────────────────────────────────── */
+* { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--surface);
+  color: var(--ink-800);
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+/* ── Scrollbar ──────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--ink-50); }
+::-webkit-scrollbar-thumb { background: var(--ink-200); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--ink-400); }
+
+/* ── Selection ──────────────────────────────────── */
+::selection { background: var(--brand-light); color: var(--brand-dark); }
+
+/* ── Focus ──────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--brand);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Utility classes ────────────────────────────── */
+.font-display { font-family: var(--font-display); }
+
+.text-balance { text-wrap: balance; }
+
+.container-site {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+/* ── Animations (stagger helper) ───────────────── */
+.stagger-1 { animation-delay: 0.1s; }
+.stagger-2 { animation-delay: 0.2s; }
+.stagger-3 { animation-delay: 0.3s; }
+.stagger-4 { animation-delay: 0.4s; }
+.stagger-5 { animation-delay: 0.5s; }
+
+/* ── Prose RTL support ──────────────────────────── */
+[dir="rtl"] {
+  font-family: 'Noto Sans Arabic', var(--font-body), sans-serif;
+}
+
+/* ── Custom button base ─────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.25rem;
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.9375rem;
+  transition: all 0.2s;
+  cursor: pointer;
+  text-decoration: none;
+  border: none;
+}
+
+.btn-primary {
+  background: var(--brand);
+  color: white;
+}
+.btn-primary:hover { background: var(--brand-dark); transform: translateY(-1px); }
+
+.btn-outline {
+  background: transparent;
+  color: var(--ink-800);
+  border: 1.5px solid var(--ink-200);
+}
+.btn-outline:hover { border-color: var(--ink-400); background: var(--ink-50); }
+
+.btn-ghost {
+  background: transparent;
+  color: var(--brand);
+}
+.btn-ghost:hover { background: var(--brand-light); }
+
+/* ── Card ───────────────────────────────────────── */
+.card {
+  background: white;
+  border: 1px solid var(--ink-100);
+  border-radius: 16px;
+  padding: 1.5rem;
+}
+
+/* ── Badge ──────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+.badge-green  { background: #E1F5EE; color: #0F6E56; }
+.badge-amber  { background: #FAEEDA; color: #854F0B; }
+.badge-blue   { background: #E6F1FB; color: #185FA5; }
+.badge-red    { background: #FCEBEB; color: #A32D2D; }
+.badge-ink    { background: var(--ink-100); color: var(--ink-600); }
+
+/* ── Input ──────────────────────────────────────── */
+.input {
+  width: 100%;
+  padding: 0.6rem 1rem;
+  border: 1.5px solid var(--ink-200);
+  border-radius: 10px;
+  font-family: var(--font-body);
+  font-size: 0.9375rem;
+  background: white;
+  color: var(--ink-800);
+  transition: border-color 0.2s;
+  outline: none;
+}
+.input:focus { border-color: var(--brand); }
+.input::placeholder { color: var(--ink-400); }
+
+/* ── Divider ────────────────────────────────────── */
+.divider {
+  height: 1px;
+  background: var(--ink-100);
+  margin: 1.5rem 0;
+}
+
+/* ── Grid background ────────────────────────────── */
+.bg-grid {
+  background-image: linear-gradient(rgba(44,44,40,.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(44,44,40,.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ── Gradient text ──────────────────────────────── */
+.text-gradient {
+  background: linear-gradient(135deg, var(--brand) 0%, #2DD4BF 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ── Stat number ────────────────────────────────── */
+.stat-num {
+  font-family: var(--font-display);
+  font-size: 2.5rem;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  color: var(--ink-900);
+}
