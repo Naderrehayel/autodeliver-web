@@ -31,7 +31,7 @@ const DRIVER_NAV = [
   { href: '/profile', icon: User, label: 'Profile' },
 ];
 
-function DriverSidebar() {
+export default function DriverPanelPage() {
   const pathname = usePathname();
   const { user, logout } = useAuthStore();
 
