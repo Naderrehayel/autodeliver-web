@@ -1,9 +1,22 @@
 'use client';
+
 import { useState } from 'react';
 import Link from 'next/link';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import { useForm } from 'react-hook-form';
-import { Package, TrendingUp, Star, ToggleLeft, ToggleRight, MapPin, Clock, Loader2, ChevronRight, LogOut, LayoutDashboard, FileText, User } from 'lucide-react';
+import {
+  Package,
+  TrendingUp,
+  Star,
+  ToggleLeft,
+  ToggleRight,
+  MapPin,
+  Clock,
+  Loader2,
+  LogOut,
+  LayoutDashboard,
+  FileText,
+  User,
+} from 'lucide-react';
 import toast from 'react-hot-toast';
 import { orders as ordersApi, offers as offersApi, user as userApi } from '@/lib/api';
 import { useAuthStore } from '@/hooks/useAuth';
@@ -13,48 +26,50 @@ import { formatDistanceToNow } from 'date-fns';
 /* ── Sidebar ───────────────────────────────────────────────── */
 const DRIVER_NAV = [
   { href: '/driver/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/driver/orders',    icon: Package,          label: 'Available Orders' },
-  { href: '/driver/offers',    icon: FileText,         label: 'My Offers' },
-  { href: '/profile',          icon: User,             label: 'Profile' },
+  { href: '/driver/orders', icon: Package, label: 'Available Orders' },
+  { href: '/driver/offers', icon: FileText, label: 'My Offers' },
+  { href: '/profile', icon: User, label: 'Profile' },
 ];
 
 function DriverSidebar() {
-  return <div>...</div>
-}
-export default function DriverPanelPage() {
-  return (
-    <div>
-      <DriverSidebar />
-    </div>
-  )
-}
   const pathname = usePathname();
   const { user, logout } = useAuthStore();
 
   return (
-    <aside className="w-64 bg-[#161614] flex flex-col fixed h-full z-40 hidden md:flex">
-      <div className="p-5 border-b border-white/10">
+    <aside className="fixed z-40 hidden h-full w-64 flex-col bg-[#161614] md:flex">
+      <div className="border-b border-white/10 p-5">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-brand-400 flex items-center justify-center">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-brand-400">
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none">
-              <path d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3" stroke="white" strokeWidth="2" strokeLinecap="round"/>
-              <rect x="9" y="11" width="14" height="10" rx="2" stroke="white" strokeWidth="2"/>
-              <circle cx="12" cy="21" r="1" fill="white"/>
-              <circle cx="20" cy="21" r="1" fill="white"/>
+              <path
+                d="M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h11a2 2 0 012 2v3"
+                stroke="white"
+                strokeWidth="2"
+                strokeLinecap="round"
+              />
+              <rect x="9" y="11" width="14" height="10" rx="2" stroke="white" strokeWidth="2" />
+              <circle cx="12" cy="21" r="1" fill="white" />
+              <circle cx="20" cy="21" r="1" fill="white" />
             </svg>
           </div>
           <span className="font-display text-base text-white">AutoDeliver</span>
         </Link>
       </div>
 
-      <nav className="flex-1 p-4 space-y-1">
-        {DRIVER_NAV.map(item => {
+      <nav className="flex-1 space-y-1 p-4">
+        {DRIVER_NAV.map((item) => {
           const active = pathname === item.href;
+
           return (
-            <Link key={item.href} href={item.href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium transition-all ${
-                active ? 'bg-brand-400 text-white' : 'text-white/60 hover:bg-white/10 hover:text-white'
-              }`}>
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${
+                active
+                  ? 'bg-brand-400 text-white'
+                  : 'text-white/60 hover:bg-white/10 hover:text-white'
+              }`}
+            >
               <item.icon size={16} />
               {item.label}
             </Link>
@@ -62,19 +77,26 @@ export default function DriverPanelPage() {
         })}
       </nav>
 
-      <div className="p-4 border-t border-white/10">
-        <div className="flex items-center gap-3 px-3 py-2.5 mb-1">
-          <div className="w-8 h-8 rounded-full bg-brand-400 flex items-center justify-center text-white text-xs font-semibold flex-shrink-0">
-            {user?.first_name?.[0]}{user?.last_name?.[0]}
+      <div className="border-t border-white/10 p-4">
+        <div className="mb-1 flex items-center gap-3 px-3 py-2.5">
+          <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand-400 text-xs font-semibold text-white">
+            {user?.first_name?.[0]}
+            {user?.last_name?.[0]}
           </div>
           <div className="min-w-0">
-            <p className="text-sm font-medium text-white truncate">{user?.first_name} {user?.last_name}</p>
-            <p className="text-xs text-white/40 truncate">{user?.email}</p>
+            <p className="truncate text-sm font-medium text-white">
+              {user?.first_name} {user?.last_name}
+            </p>
+            <p className="truncate text-xs text-white/40">{user?.email}</p>
           </div>
         </div>
-        <button onClick={() => logout()}
-          className="flex items-center gap-2 px-3 py-2 w-full rounded-xl text-sm text-white/40 hover:text-white hover:bg-white/10 transition">
-          <LogOut size={14} /> Sign out
+
+        <button
+          onClick={() => logout()}
+          className="flex w-full items-center gap-2 rounded-xl px-3 py-2 text-sm text-white/40 transition hover:bg-white/10 hover:text-white"
+        >
+          <LogOut size={14} />
+          Sign out
         </button>
       </div>
     </aside>
@@ -82,14 +104,14 @@ export default function DriverPanelPage() {
 }
 
 /* ── Driver Dashboard Page ─────────────────────────────────── */
-export default function DriverDashboardPage() {
+export default function DriverPanelPage() {
   const { user } = useAuthStore();
   const queryClient = useQueryClient();
   const [isAvailable, setIsAvailable] = useState(true);
 
   const { data: availableData, isLoading } = useQuery({
     queryKey: ['available-orders'],
-    queryFn:  () => ordersApi.available({ limit: '8' }),
+    queryFn: () => ordersApi.available({ limit: '8' }),
   });
 
   const availabilityMutation = useMutation({
@@ -106,39 +128,47 @@ export default function DriverDashboardPage() {
     <div className="flex min-h-screen bg-[#F9F8F5]">
       <DriverSidebar />
 
-      <main className="flex-1 md:ml-64 p-6 lg:p-8">
-        {/* Header */}
-        <div className="flex items-center justify-between mb-8">
+      <main className="flex-1 p-6 md:ml-64 lg:p-8">
+        <div className="mb-8 flex items-center justify-between">
           <div>
             <h1 className="font-display text-2xl text-[#161614]">Driver Dashboard</h1>
             <p className="text-sm text-[#8A8880]">Welcome back, {user?.first_name}</p>
           </div>
+
           <button
             onClick={() => availabilityMutation.mutate(!isAvailable)}
-            className={`flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-medium transition border ${
+            className={`flex items-center gap-2 rounded-xl border px-4 py-2 text-sm font-medium transition ${
               isAvailable
-                ? 'bg-brand-50 text-brand-600 border-brand-200'
-                : 'bg-[#F5F4F0] text-[#8A8880] border-[#E8E7E2]'
-            }`}>
-            {isAvailable
-              ? <ToggleRight size={18} className="text-brand-400" />
-              : <ToggleLeft  size={18} />
-            }
+                ? 'border-brand-200 bg-brand-50 text-brand-600'
+                : 'border-[#E8E7E2] bg-[#F5F4F0] text-[#8A8880]'
+            }`}
+          >
+            {isAvailable ? (
+              <ToggleRight size={18} className="text-brand-400" />
+            ) : (
+              <ToggleLeft size={18} />
+            )}
             {isAvailable ? 'Available' : 'Offline'}
           </button>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+        <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
           {[
-            { label: 'Total earned',  value: '€0',  icon: TrendingUp, color: 'bg-brand-50' },
-            { label: 'Deliveries',    value: '0',    icon: Package,   color: 'bg-blue-50' },
-            { label: 'Rating',        value: '—',    icon: Star,      color: 'bg-amber-50' },
-            { label: 'New requests',  value: availableOrders.length.toString(), icon: Clock, color: 'bg-[#F9F8F5]' },
-          ].map(s => (
-            <div key={s.label} className={`${s.color} rounded-2xl p-5 border border-[#E8E7E2]`}>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-medium text-[#8A8880] uppercase tracking-wide">{s.label}</span>
+            { label: 'Total earned', value: '€0', icon: TrendingUp, color: 'bg-brand-50' },
+            { label: 'Deliveries', value: '0', icon: Package, color: 'bg-blue-50' },
+            { label: 'Rating', value: '—', icon: Star, color: 'bg-amber-50' },
+            {
+              label: 'New requests',
+              value: availableOrders.length.toString(),
+              icon: Clock,
+              color: 'bg-[#F9F8F5]',
+            },
+          ].map((s) => (
+            <div key={s.label} className={`${s.color} rounded-2xl border border-[#E8E7E2] p-5`}>
+              <div className="mb-2 flex items-center justify-between">
+                <span className="text-xs font-medium uppercase tracking-wide text-[#8A8880]">
+                  {s.label}
+                </span>
                 <s.icon size={15} className="text-[#C8C7C0]" />
               </div>
               <div className="font-display text-3xl text-[#161614]">{s.value}</div>
@@ -146,20 +176,19 @@ export default function DriverDashboardPage() {
           ))}
         </div>
 
-        {/* Available orders */}
-        <div className="bg-white rounded-2xl border border-[#E8E7E2]">
-          <div className="flex items-center justify-between px-6 py-4 border-b border-[#E8E7E2]">
+        <div className="rounded-2xl border border-[#E8E7E2] bg-white">
+          <div className="flex items-center justify-between border-b border-[#E8E7E2] px-6 py-4">
             <h2 className="font-display text-lg text-[#161614]">Available orders</h2>
             <span className="badge badge-green">{availableOrders.length} open</span>
           </div>
 
           {isLoading ? (
-            <div className="flex items-center justify-center h-32">
+            <div className="flex h-32 items-center justify-center">
               <Loader2 size={24} className="animate-spin text-brand-400" />
             </div>
           ) : availableOrders.length === 0 ? (
             <div className="p-12 text-center">
-              <Package size={36} className="text-[#C8C7C0] mx-auto mb-3" />
+              <Package size={36} className="mx-auto mb-3 text-[#C8C7C0]" />
               <p className="text-[#8A8880]">No available orders right now.</p>
             </div>
           ) : (
@@ -176,22 +205,28 @@ export default function DriverDashboardPage() {
 }
 
 function OrderCard({ order }: { order: any }) {
-  const [open, setOpen]         = useState(false);
-  const [price, setPrice]       = useState('');
-  const [message, setMessage]   = useState('');
-  const [eta, setEta]           = useState('');
-  const [loading, setLoading]   = useState(false);
-  const queryClient             = useQueryClient();
+  const [open, setOpen] = useState(false);
+  const [price, setPrice] = useState('');
+  const [message, setMessage] = useState('');
+  const [eta, setEta] = useState('');
+  const [loading, setLoading] = useState(false);
+  const queryClient = useQueryClient();
 
   const submit = async () => {
-    if (!price) return toast.error('Enter your price');
+    if (!price) {
+      toast.error('Enter your price');
+      return;
+    }
+
     setLoading(true);
+
     try {
       await offersApi.submit(order.id, {
         price: parseFloat(price),
         message,
         eta_days: eta ? parseInt(eta) : undefined,
       });
+
       toast.success('Offer submitted!');
       setOpen(false);
       queryClient.invalidateQueries({ queryKey: ['available-orders'] });
@@ -209,51 +244,84 @@ function OrderCard({ order }: { order: any }) {
           <p className="font-medium text-[#2C2C28]">
             {order.car_make} {order.car_model} {order.car_year}
           </p>
-          <div className="flex items-center gap-1.5 text-xs text-[#8A8880] mt-1">
+
+          <div className="mt-1 flex items-center gap-1.5 text-xs text-[#8A8880]">
             <MapPin size={11} />
             {order.pickup_city}, {order.pickup_country}
             <span className="text-[#C8C7C0]">→</span>
             {order.delivery_city || order.delivery_country}
           </div>
-          <div className="flex items-center gap-2 mt-2">
+
+          <div className="mt-2 flex items-center gap-2">
             <span className="badge badge-ink">{order.offer_count} offers</span>
             <span className="text-xs text-[#8A8880]">
               Posted {formatDistanceToNow(new Date(order.created_at), { addSuffix: true })}
             </span>
           </div>
         </div>
-        <button onClick={() => setOpen(!open)}
-          className="btn btn-primary !py-2 !px-4 !rounded-xl text-xs flex-shrink-0">
+
+        <button
+          onClick={() => setOpen(!open)}
+          className="btn btn-primary !rounded-xl !px-4 !py-2 text-xs flex-shrink-0"
+        >
           Make offer
         </button>
       </div>
 
       {open && (
-        <div className="mt-4 pt-4 border-t border-[#F5F4F0] space-y-3">
+        <div className="mt-4 space-y-3 border-t border-[#F5F4F0] pt-4">
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-[#2C2C28] mb-1">Your price (EUR) *</label>
-              <input value={price} onChange={e => setPrice(e.target.value)}
-                type="number" className="input text-sm" placeholder="1500" />
+              <label className="mb-1 block text-xs font-medium text-[#2C2C28]">
+                Your price (EUR) *
+              </label>
+              <input
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                type="number"
+                className="input text-sm"
+                placeholder="1500"
+              />
             </div>
+
             <div>
-              <label className="block text-xs font-medium text-[#2C2C28] mb-1">Est. days</label>
-              <input value={eta} onChange={e => setEta(e.target.value)}
-                type="number" className="input text-sm" placeholder="12" />
+              <label className="mb-1 block text-xs font-medium text-[#2C2C28]">Est. days</label>
+              <input
+                value={eta}
+                onChange={(e) => setEta(e.target.value)}
+                type="number"
+                className="input text-sm"
+                placeholder="12"
+              />
             </div>
           </div>
+
           <div>
-            <label className="block text-xs font-medium text-[#2C2C28] mb-1">Message to client</label>
-            <textarea value={message} onChange={e => setMessage(e.target.value)}
-              rows={2} className="input text-sm resize-none"
-              placeholder="Introduce yourself and your experience…" />
+            <label className="mb-1 block text-xs font-medium text-[#2C2C28]">
+              Message to client
+            </label>
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              rows={2}
+              className="input resize-none text-sm"
+              placeholder="Introduce yourself and your experience…"
+            />
           </div>
+
           <div className="flex gap-2">
-            <button onClick={submit} disabled={loading}
-              className="btn btn-primary !py-2 !px-5 !rounded-xl text-sm disabled:opacity-60">
+            <button
+              onClick={submit}
+              disabled={loading}
+              className="btn btn-primary !rounded-xl !px-5 !py-2 text-sm disabled:opacity-60"
+            >
               {loading ? <Loader2 size={14} className="animate-spin" /> : 'Submit offer'}
             </button>
-            <button onClick={() => setOpen(false)} className="btn btn-outline !py-2 !px-4 !rounded-xl text-sm">
+
+            <button
+              onClick={() => setOpen(false)}
+              className="btn btn-outline !rounded-xl !px-4 !py-2 text-sm"
+            >
               Cancel
             </button>
           </div>
